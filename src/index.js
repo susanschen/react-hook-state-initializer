@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useCallback } from "react";
+// import { useMemo } from "react"  if you are using this built-in hook
 import ReactDOM from "react-dom";
 
 import "./styles.css";
@@ -8,11 +9,18 @@ import "./styles.css";
 // Set a default value of 1 if no value is passed to parameter
 function useCounter(initial=1) {
   const [count, setCount] = useState(initial);
+
+  // Handling Resets
+  // useCallback is another built-in Hook
+  const reset=useCallback(() => {
+    setCount(initial)
+  },[initial])
   
   // Return an object
   return {
     count,
-    setCount
+    setCount,
+    reset  // remember to return this so any component may use it
   };
 
  /*
@@ -23,8 +31,8 @@ function useCounter(initial=1) {
 
   https://reactjs.org/docs/hooks-reference.html
 
-  "A memoized function "remembers" the results corresponding to some set of specific inputs.
-   Subsequent calls with remembered inputs return the remembered result rather than recalculating it"
+  "A memoized function "remembers" the results, so subsequent calls with remembered inputs 
+  return the remembered result rather than recalculating it"
   https://en.wikipedia.org/wiki/Memoization
 
   return useMemo(() => ({
@@ -32,12 +40,13 @@ function useCounter(initial=1) {
     setCount 
   }))
 
-  We are not using useMemo in this example because there is no complex calculations
+  We are not using useMemo in this example because we are using useCallback(fn,deps)
+  which is equivalent to useMemo(()=> fn,deps)
   */
 }
 
 function App() {
-  const { count, setCount } = useCounter(5);
+  const { count, setCount, reset } = useCounter(5);
 
   return (
     <div className="App">
@@ -53,6 +62,7 @@ function App() {
       </ul>
       <div className="buttonContainer">
         <button onClick={() => setCount(count + 1)}>More coffee</button>
+        <button onClick={reset}>Reset</button>
       </div>
       <footer>
         <p>Tutorial source: <a href="https://blog.logrocket.com/simplifying-state-initializers-with-react-hooks/">LogRocket blog</a></p>
