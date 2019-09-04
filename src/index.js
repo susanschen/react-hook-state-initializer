@@ -30,6 +30,9 @@ function App() {
       <div className="buttonContainer">
         <button onClick={() => setCount(count + 1)}>More coffee</button>
       </div>
+      <footer>
+        <p>Tutorial source: <a href="https://blog.logrocket.com/simplifying-state-initializers-with-react-hooks/">LogRocket blog</a></p>
+      </footer>
     </div>
   );
 }
